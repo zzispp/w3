@@ -265,6 +265,21 @@ func (vm *VM) SetStorageAt(addr common.Address, slot, val common.Hash) {
 	vm.db.SetState(addr, slot, val)
 }
 
+func (vm *VM) GetBlockTime() uint64 {
+    return vm.opts.blockCtx.Time
+}
+func (vm *VM) SetBlockTime(timestamp uint64) {
+    vm.opts.blockCtx.Time = timestamp
+}
+
+func  (vm *VM) SetBlockNumber(blockNumber uint64) {
+	vm.opts.blockCtx.BlockNumber = big.NewInt(int64(blockNumber))
+}
+
+func (vm *VM) GetBlockNumber() *big.Int {
+	return vm.opts.blockCtx.BlockNumber
+}
+
 // Snapshot the current state of the VM. The returned state can only be rolled
 // back to once. Use [state.StateDB.Copy] if you need to rollback multiple times.
 func (vm *VM) Snapshot() *state.StateDB { return vm.db.Copy() }
