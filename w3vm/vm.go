@@ -254,6 +254,16 @@ func (vm *VM) GetBlockTime() uint64 {
 	return vm.opts.blockCtx.Time
 }
 
+func (vm *VM) SetHeader(header *types.Header) {
+	vm.opts.header = header
+}
+
+func (vm *VM) GetHeader() *types.Header {
+	return vm.opts.header
+}
+
+
+
 // Code returns the code of the given address.
 func (vm *VM) Code(addr common.Address) ([]byte, error) {
 	code := vm.db.GetCode(addr)
