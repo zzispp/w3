@@ -237,6 +237,23 @@ func (vm *VM) SetBalance(addr common.Address, balance *big.Int) {
 	vm.db.SetBalance(addr, uint256.MustFromBig(balance), tracing.BalanceChangeUnspecified)
 }
 
+// SetBalance sets the balance of the given address.
+func (vm *VM) SetBlockNumber(blockNumber *big.Int) {
+	vm.opts.blockCtx.BlockNumber = blockNumber
+}
+
+func (vm *VM) GetBlockNumber() *big.Int {
+	return vm.opts.blockCtx.BlockNumber
+}
+
+func (vm *VM) SetBlockTime(time uint64) {
+	vm.opts.blockCtx.Time = time
+}
+
+func (vm *VM) GetBlockTime() uint64 {
+	return vm.opts.blockCtx.Time
+}
+
 // Code returns the code of the given address.
 func (vm *VM) Code(addr common.Address) ([]byte, error) {
 	code := vm.db.GetCode(addr)
@@ -345,7 +362,7 @@ func (v *VM) buildMessage(msg *w3types.Message, skipAccChecks bool) (*core.Messa
 		BlobGasFeeCap:         msg.BlobGasFeeCap,
 		BlobHashes:            msg.BlobHashes,
 		SetCodeAuthorizations: msg.SetCodeAuthorizations,
-		SkipNonceChecks:       skipAccChecks,
+		SkipNonceChecks:       true, //跳过nonce检查
 		SkipFromEOACheck:      skipAccChecks,
 	}, nil
 }
