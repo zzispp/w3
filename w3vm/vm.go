@@ -138,7 +138,7 @@ func (v *VM) apply(msg *w3types.Message, isCall bool, hooks *tracing.Hooks) (*Re
 		GasUsed:    result.UsedGas,
 		MaxGasUsed: result.MaxUsedGas,
 		Output:     result.ReturnData,
-		Logs:       v.db.GetLogs(txHash, 0, w3.Hash0,0),
+		Logs:       v.db.GetLogs(txHash, 0, w3.Hash0, 0),
 	}
 
 	// zero out the log tx hashes, indices and normalize the log indices
@@ -262,8 +262,6 @@ func (vm *VM) GetHeader() *types.Header {
 	return vm.opts.header
 }
 
-
-
 // Code returns the code of the given address.
 func (vm *VM) Code(addr common.Address) ([]byte, error) {
 	code := vm.db.GetCode(addr)
@@ -290,21 +288,6 @@ func (vm *VM) StorageAt(addr common.Address, slot common.Hash) (common.Hash, err
 // SetStorageAt sets the state of the given address at the given storage slot.
 func (vm *VM) SetStorageAt(addr common.Address, slot, val common.Hash) {
 	vm.db.SetState(addr, slot, val)
-}
-
-func (vm *VM) GetBlockTime() uint64 {
-    return vm.opts.blockCtx.Time
-}
-func (vm *VM) SetBlockTime(timestamp uint64) {
-    vm.opts.blockCtx.Time = timestamp
-}
-
-func  (vm *VM) SetBlockNumber(blockNumber uint64) {
-	vm.opts.blockCtx.BlockNumber = big.NewInt(int64(blockNumber))
-}
-
-func (vm *VM) GetBlockNumber() *big.Int {
-	return vm.opts.blockCtx.BlockNumber
 }
 
 // Snapshot the current state of the VM. The returned state can only be rolled
